@@ -1,0 +1,12 @@
+<% include include/header.html %>
+<header>
+  <h2>Registration complete</h2>
+</header>
+<section>
+  <p>Access token : <%= googleCalendarAccountToken.access_token %> </p>
+
+  <p>Expires at : <%= googleCalendarAccountToken.expires_at %> </p>
+
+  <p>Refresh token : <%= googleCalendarAccountToken.refresh_token %> </p>
+</section>
+<% include include/footer.html %>
