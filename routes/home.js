@@ -1,7 +1,7 @@
 var async = require('async')
   , request = require('request')
   , db = require('../lib/db')
-  , GoogleCalendarAccountToken = db.GoogleCalendarAccountToken;
+  , GoogleCalendarAccountToken = db.GoogleAccountToken;
 
 function requestAuth(req, res, client_id) {
   var google_auth_url = 'https://accounts.google.com/o/oauth2/auth?'
@@ -13,7 +13,7 @@ function requestAuth(req, res, client_id) {
 }
 
 function requestToken(req, res, googleCalendarAccountToken) {
-  var google_token_url = 'https://accounts.google.com/o/oauth2/token'
+  var google_token_url = 'https://accounts.google.com/o/oauth2/token';
   if (req.query.code === undefined) {
     return requestAuth(req, res, googleCalendarAccountToken.client_id);
   }

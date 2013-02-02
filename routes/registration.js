@@ -1,5 +1,5 @@
 var db = require('../lib/db')
-  , GoogleCalendarAccountToken = db.GoogleCalendarAccountToken;
+  , GoogleCalendarAccountToken = db.GoogleAccountToken;
 
 module.exports = function (req, res, next) {
   var googleCalendarAccountToken;
