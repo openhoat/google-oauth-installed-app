@@ -1,5 +1,5 @@
 {
-  "name":"google-auth-installed-app",
+  "name":"google-oauth-installed-app",
   "version":"0.0.1",
   "main":"app.js",
   "author":{
