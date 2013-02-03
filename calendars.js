@@ -1,24 +1,47 @@
-var calendarCrawler = require('./lib/calendar-crawler')
-  , username = process.argv[2];
+var GoogleCalendarService = require('./lib/google-calendar-service')
+  , Step = require('step')
+  , username = process.argv[2]
+  , googleCalendarService = new GoogleCalendarService(username);
 
-calendarCrawler.process(username, function (err, result) {
-  if (err) {
-    console.error(err.msg);
-    if (err.error) {
-      console.error('Error :', err.error.stack);
-    }
-    return;
+function exitError(msg, err) {
+  if (msg) {
+    console.error(msg);
+  } else {
+    console.error('Error !');
   }
-  result.forEach(function (calendar) {
-    calendar.events.forEach(function (event) {
-      console.log('[%s] - calendar %s : %s [%s - %s] @ %s',
-        calendar.id,
-        calendar.summary,
-        event.summary,
-        event.start,
-        event.end,
-        event.location
-      );
+  if (err) {
+    console.error(err.stack);
+  }
+}
+
+Step(
+  function () {
+    googleCalendarService.init(this);
+  },
+  function (err) {
+    if (err) {
+      return exitError(null, err);
+    }
+    googleCalendarService.loadCalendars(this);
+  },
+  function (err, calendars) {
+    calendars.items.forEach(function (calendar) {
+      googleCalendarService.loadCalendarEvents(calendar.id, function (err, calendarEvents) {
+        if (err) {
+          return exitError(null, err);
+        }
+        calendarEvents.items.forEach(function (calendarEvent) {
+          console.log('[%s] - calendar %s : %s [%s - %s] @ %s',
+            calendar.id,
+            calendar.summary,
+            calendarEvent.summary,
+            calendarEvent.start,
+            calendarEvent.end,
+            calendarEvent.location
+          );
+        });
+      });
     });
-  });
-});
+    this();
+  }
+);

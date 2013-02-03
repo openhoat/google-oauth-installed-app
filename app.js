@@ -1,6 +1,9 @@
 var path = require('path')
+  , db = require('./lib/db')
   , express = require('express')
   , app = express();
+
+db.connect();
 
 app.set('env', 'development');
 

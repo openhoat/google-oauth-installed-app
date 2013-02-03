@@ -1,7 +1,7 @@
 var async = require('async')
   , request = require('request')
   , db = require('../lib/db')
-  , GoogleCalendarAccountToken = db.GoogleAccountToken;
+  , GoogleAccountToken = db.GoogleAccountToken;
 
 function requestAuth(req, res, client_id) {
   var google_auth_url = 'https://accounts.google.com/o/oauth2/auth?'
@@ -12,15 +12,15 @@ function requestAuth(req, res, client_id) {
   return res.redirect(google_auth_url);
 }
 
-function requestToken(req, res, googleCalendarAccountToken) {
+function requestToken(req, res, googleAccountToken) {
   var google_token_url = 'https://accounts.google.com/o/oauth2/token';
   if (req.query.code === undefined) {
-    return requestAuth(req, res, googleCalendarAccountToken.client_id);
+    return requestAuth(req, res, googleAccountToken.client_id);
   }
   request.post(google_token_url, {form:{
     'code':req.query.code,
-    'client_id':googleCalendarAccountToken.client_id,
-    'client_secret':googleCalendarAccountToken.client_secret,
+    'client_id':googleAccountToken.client_id,
+    'client_secret':googleAccountToken.client_secret,
     'redirect_uri':'http://localhost:3000',
     'grant_type':'authorization_code'
   }}, function (error, response, body) {
@@ -29,14 +29,14 @@ function requestToken(req, res, googleCalendarAccountToken) {
       return res.send(500, error);
     }
     now = new Date().getTime();
-    googleCalendarAccountToken.access_token = result.access_token;
-    googleCalendarAccountToken.expires_at = new Date(now + result.expires_in);
-    googleCalendarAccountToken.refresh_token = result.refresh_token;
-    googleCalendarAccountToken.save(function (err) {
+    googleAccountToken.access_token = result.access_token;
+    googleAccountToken.expires_at = new Date(now + result.expires_in);
+    googleAccountToken.refresh_token = result.refresh_token;
+    googleAccountToken.save(function (err) {
       if (err) {
         return res.send(500, err);
       }
-      res.render('complete', { googleCalendarAccountToken:googleCalendarAccountToken });
+      res.render('complete', { googleAccountToken:googleAccountToken });
     });
   });
 }
@@ -45,16 +45,16 @@ module.exports = function (req, res, next) {
   if (req.session.username === undefined) {
     return res.redirect('/login?next=/');
   }
-  GoogleCalendarAccountToken.findOne({username:req.session.username}, function (err, googleCalendarAccountToken) {
+  GoogleAccountToken.findOne({username:req.session.username}, function (err, googleAccountToken) {
     if (err) {
       return res.send(500, err);
     }
-    if (googleCalendarAccountToken === null) {
+    if (googleAccountToken === null) {
       return res.redirect('/registration?next=/');
     }
-    if (googleCalendarAccountToken.access_token == undefined) {
-      return requestToken(req, res, googleCalendarAccountToken);
+    if (googleAccountToken.access_token === undefined) {
+      return requestToken(req, res, googleAccountToken);
     }
-    res.render('complete', { googleCalendarAccountToken:googleCalendarAccountToken });
+    res.render('complete', { googleAccountToken:googleAccountToken });
   });
 };
