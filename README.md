@@ -22,6 +22,6 @@ Follow the usual Google Auth process.
 
 Once the tokens confirmation page appears, start the batch:
 
-    $ node calendars
+    $ node calendars myusername
 
 Feel free to do what you want with this peace of code !
