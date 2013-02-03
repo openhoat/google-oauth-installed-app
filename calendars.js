@@ -4,7 +4,7 @@ var calendarCrawler = require('./lib/calendar-crawler')
 calendarCrawler.process(username, function (err, result) {
   if (err) {
     console.error(err.msg);
-    if (err.err) {
+    if (err.error) {
       console.error('Error :', err.error.stack);
     }
     return;
