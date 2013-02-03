@@ -24,4 +24,6 @@ Once the tokens confirmation page appears, start the batch:
 
     $ node calendars myusername
 
+You should see all calendar events for the registered user (myusername).
+
 Feel free to do what you want with this peace of code !
