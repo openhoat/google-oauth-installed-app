@@ -1,5 +1,7 @@
 ## Description
 
+The main goal of this project is to use Google Auth Api process for installed applications, not for usual web application workflows.
+
 This sample is splitted in two parts :
 
 - app.js : a web application doing the Google Api Auth and Approval process.
