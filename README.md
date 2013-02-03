@@ -17,7 +17,9 @@ Start the web app:
     $ node app
 
 Browse: http://localhost:3000/
+
 Follow the usual Google Auth process.
+
 Once the tokens confirmation page appears, start the batch:
 
     $ node calendars
