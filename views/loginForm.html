@@ -1,0 +1,18 @@
+<% include include/header.html %>
+<header>
+  <h2>Google Auth</h2>
+  <% include include/navbar.html %>
+</header>
+<section>
+  <% include include/message.html %>
+  <h2>Login form</h2>
+
+  <form action="/login" method="post" class="form-inline">
+    <input type="hidden" name="next" value="<%= nextUrl %>">
+    <label for="username">Username:
+      <input type="text" id="username" name="username" placeholder="john.doe" autofocus>
+    </label>
+    <button type="submit" class="btn">Login</button>
+  </form>
+</section>
+<% include include/footer.html %>

@@ -1,0 +1,26 @@
+<div class="navbar navbar-inverse">
+  <div class="navbar-inner">
+    <div class="container">
+      <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </a>
+      <span class="brand"><%= session.user ? session.user.name : 'visitor' %> :</span>
+      <div class="nav-collapse collapse">
+        <ul class="nav">
+          <li class="<%= currentUrl === '/' ? 'active' : '' %>">
+            <a href="/">Home</a>
+          </li>
+          <% if (session.user) { %>
+            <li class="<%= currentUrl.indexOf('/calendars') === 0 ? 'active' : '' %>"><a href="/calendars">Calendars</a></li>
+            <li class="<%= currentUrl.indexOf('/account') === 0 ? 'active' : '' %>"><a href="/account">Account</a></li>
+            <li class="<%= currentUrl.indexOf('/logout') === 0 ? 'active' : '' %>"><a href="/logout?next=<%= currentUrl %>">Logout</a></li>
+          <% } else { %>
+            <li class="<%= currentUrl.indexOf('/login') === 0 ? 'active' : '' %>"><a href="/login?next=<%= currentUrl %>">Login</a></li>
+          <% } %>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

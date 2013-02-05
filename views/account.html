@@ -1,0 +1,49 @@
+<% include include/header.html %>
+<header>
+  <h2>Google Auth</h2>
+  <% include include/navbar.html %>
+</header>
+<section>
+  <% include include/message.html %>
+  <h2>Your account</h2>
+
+  <form class="form-horizontal">
+    <div class="control-group">
+      <label class="control-label" for="username">Username :</label>
+      <div class="controls">
+        <input type="text" id="username" readonly value="<%= googleAccountToken.username %>">
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label" for="client_id">Client ID :</label>
+      <div class="controls">
+        <input type="text" id="client_id" readonly value="<%= googleAccountToken.client_id %>">
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label" for="client_secret">Client secret :</label>
+      <div class="controls">
+        <input type="text" id="client_secret" readonly value="<%= googleAccountToken.client_secret %>">
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label" for="access_token">Access token :</label>
+      <div class="controls">
+        <input type="text" id="access_token" readonly value="<%= googleAccountToken.access_token %>">
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label" for="expires_at">Expires at :</label>
+      <div class="controls">
+        <input type="text" id="expires_at" readonly value="<%= googleAccountToken.expires_at %>">
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label" for="refresh_token">Refresh token :</label>
+      <div class="controls">
+        <input type="text" id="refresh_token" readonly value="<%= googleAccountToken.refresh_token %>">
+      </div>
+    </div>
+  </form>
+</section>
+<% include include/footer.html %>

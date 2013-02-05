@@ -1,0 +1,46 @@
+<% include include/header.html %>
+<header>
+  <h2>Google Auth</h2>
+  <% include include/navbar.html %>
+</header>
+<section>
+  <% include include/message.html %>
+  <h2>Registration form</h2>
+  <p>
+    Please fill in the fields according to your
+    <a href="https://code.google.com/apis/console/:access" target="_blank">google api console</a> :<br>
+    Go to 'API Access' link, then copy/paste 'Client ID' and 'Client secret' from the
+    'Client ID for installed applications' section.
+  </p>
+  <form action='/registration' method='post' class="form-horizontal">
+    <input type="hidden" name="next" value="<%= nextUrl %>">
+
+    <div class="control-group">
+      <label for="username" class="control-label">username : </label>
+
+      <div class="controls">
+        <input type="text" id="username" name="username" value="<%= session.user.name || '' %>" placeholder="john.doe"
+               autofocus>
+      </div>
+    </div>
+    <div class="control-group">
+      <label for="client_id" class="control-label">Client ID :</label>
+
+      <div class="controls">
+        <input type="text" id="client_id" name="client_id">
+      </div>
+    </div>
+    <div class="control-group">
+      <label for="client_secret" class="control-label">Client secret :</label>
+
+      <div class="controls">
+        <input type="password" id="client_secret" name="client_secret"></div>
+    </div>
+    <div class="control-group">
+      <div class="controls">
+        <button type="submit" class="btn">Register</button>
+      </div>
+    </div>
+  </form>
+</section>
+<% include include/footer.html %>

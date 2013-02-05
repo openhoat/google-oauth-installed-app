@@ -1,4 +1,5 @@
 var async = require('async')
+  , db = require('./lib/db')
   , Step = require('step')
   , GoogleCalendarService = require('./lib/google-calendar-service')
   , username = process.argv[2]
@@ -13,10 +14,12 @@ function exitError(msg, err) {
   if (err) {
     console.error(err.stack);
   }
+  db.disconnect();
 }
 
 Step(
   function () {
+    db.connect();
     googleCalendarService.init(this);
   },
   function (err) {
@@ -39,7 +42,7 @@ Step(
         if (calendarEvents.items) {
           async.forEachSeries(calendarEvents.items, function (calendarEvent, nextCalendarEvent) {
             /*
-          console.log('calendarEvent :', calendarEvent);
+             console.log('calendarEvent :', calendarEvent);
              */
             console.log('event %s : %s [%s - %s] @ %s',
               calendarEvent.id,
@@ -58,6 +61,7 @@ Step(
       });
     }, function () {
       console.log('done');
+      db.disconnect();
     });
   }
 );

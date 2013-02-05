@@ -1,0 +1,30 @@
+<% include include/header.html %>
+<header>
+  <h2>Google Auth</h2>
+  <% include include/navbar.html %>
+</header>
+<section>
+  <% include include/message.html %>
+  <h2>Events</h2>
+  <table class="table table-striped">
+    <thead>
+    <tr>
+      <th>Title</th>
+      <th>Start</th>
+      <th>End</th>
+      <th>Location</th>
+    </tr>
+    </thead>
+    <tbody>
+    <% events.forEach(function(event){ %>
+    <tr>
+      <td><%= event.summary %></td>
+      <td><%= event.start.dateTime %></td>
+      <td><%= event.end.dateTime %></td>
+      <td><%= event.location %></td>
+    </tr>
+    <% }) %>
+    </tbody>
+  </table>
+</section>
+<% include include/footer.html %>

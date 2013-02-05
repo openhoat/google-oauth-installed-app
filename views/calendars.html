@@ -1,0 +1,24 @@
+<% include include/header.html %>
+<header>
+  <h2>Google Auth</h2>
+  <% include include/navbar.html %>
+</header>
+<section>
+  <% include include/message.html %>
+  <h2>Calendars</h2>
+  <table class="table table-striped">
+    <thead>
+    <tr>
+      <th>Title</th>
+    </tr>
+    </thead>
+    <tbody>
+    <% session.user.calendars.forEach(function(calendar){ %>
+    <tr id="calendar-<%= calendar.id %>">
+      <td><a href="events/<%= calendar.id %>"><%= calendar.summary %></a></td>
+    </tr>
+    <% }) %>
+    </tbody>
+  </table>
+</section>
+<% include include/footer.html %>

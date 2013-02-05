@@ -3,58 +3,52 @@ var async = require('async')
   , db = require('../lib/db')
   , GoogleAccountToken = db.GoogleAccountToken;
 
-function requestAuth(req, res, client_id) {
-  var google_auth_url = 'https://accounts.google.com/o/oauth2/auth?'
-    + 'response_type=code'
-    + '&client_id=' + client_id
-    + '&redirect_uri=http://localhost:3000'
-    + '&scope=https://www.googleapis.com/auth/calendar';
-  return res.redirect(google_auth_url);
-}
-
-function requestToken(req, res, googleAccountToken) {
+function requestToken(googleAccountToken, code, callback) {
   var google_token_url = 'https://accounts.google.com/o/oauth2/token';
-  if (req.query.code === undefined) {
-    return requestAuth(req, res, googleAccountToken.client_id);
-  }
   request.post(google_token_url, {form:{
-    'code':req.query.code,
+    'code':code,
     'client_id':googleAccountToken.client_id,
     'client_secret':googleAccountToken.client_secret,
     'redirect_uri':'http://localhost:3000',
     'grant_type':'authorization_code'
   }}, function (error, response, body) {
+    console.log('body :', body);
     var now, result = JSON.parse(body);
     if (error) {
-      return res.send(500, error);
+      return callback(error);
     }
     now = new Date().getTime();
+    console.log('result.access_token :', result.access_token);
     googleAccountToken.access_token = result.access_token;
     googleAccountToken.expires_at = new Date(now + result.expires_in);
     googleAccountToken.refresh_token = result.refresh_token;
     googleAccountToken.save(function (err) {
-      if (err) {
-        return res.send(500, err);
-      }
-      res.render('complete', { googleAccountToken:googleAccountToken });
+      return callback(err);
     });
   });
 }
 
-module.exports = function (req, res, next) {
-  if (req.session.username === undefined) {
-    return res.redirect('/login?next=/');
+var middleware = function (req, res, next) {
+  if (req.query.code === undefined || req.session.username === undefined) {
+    res.render('home');
+  } else {
+    var username = req.session.username, currentUrl = req.url;
+    GoogleAccountToken.findOne({username:username}, function (err, googleAccountToken) {
+      if (err) {
+        return res.send(500, err);
+      }
+      if (googleAccountToken === null) {
+        return res.redirect('/registration?next=' + currentUrl);
+      }
+      requestToken(googleAccountToken, req.query.code, function (err) {
+        delete req.session.username;
+        if (err) {
+          return next(err);
+        }
+        res.redirect('/');
+      });
+    });
   }
-  GoogleAccountToken.findOne({username:req.session.username}, function (err, googleAccountToken) {
-    if (err) {
-      return res.send(500, err);
-    }
-    if (googleAccountToken === null) {
-      return res.redirect('/registration?next=/');
-    }
-    if (googleAccountToken.access_token === undefined) {
-      return requestToken(req, res, googleAccountToken);
-    }
-    res.render('complete', { googleAccountToken:googleAccountToken });
-  });
 };
+
+module.exports = middleware;
