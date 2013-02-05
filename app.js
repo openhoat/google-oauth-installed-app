@@ -57,6 +57,7 @@ app.use(function (req, res) {
 });
 
 app.use(function (err, req, res) {
+  console.error('err :', err);
   res.write('Error : ' + err);
   res.end();
 });

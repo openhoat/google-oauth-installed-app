@@ -1,0 +1,35 @@
+<% include include/header.html %>
+<header>
+  <h2>Google Auth</h2>
+  <% include include/navbar.html %>
+</header>
+<section>
+  <% include include/message.html %>
+  <h2>Approval</h2>
+  <p>
+    Click on this link to open Google Auth approval window :
+    <a id="approvalLink" href="#">Google Approval</a>
+  </p>
+  <p>
+    Please copy and paste the resulting code below :
+  </p>
+  <form action="/approval" method="post" class="form-inline">
+    <input type="hidden" name="next" value="<%= nextUrl %>">
+    <label for="code">Code:
+      <input type="text" id="code" name="code" autofocus value="4/KQgFFH4S0YVt4fSTY8pdAz8iv4hP.QmhEAj1KA50YOl05ti8ZT3an-ZxYeQI">
+    </label>
+    <button type="submit" class="btn">Submit</button>
+  </form>
+  <script>
+    $(function () {
+      $('#approvalLink').click(function(){
+        var googleAuthWindow = window.open();
+        googleAuthWindow.location = '<%- google_auth_url %>';
+        googleAuthWindow.onload = function () {
+          console.log('googleAuthWindow loaded');
+        };
+      });
+    });
+  </script>
+</section>
+<% include include/footer.html %>

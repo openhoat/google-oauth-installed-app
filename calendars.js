@@ -11,7 +11,8 @@ function exitError(msg, err) {
   } else {
     console.error('Error !');
   }
-  if (err) {
+  console.error(err);
+  if (err.stack) {
     console.error(err.stack);
   }
   db.disconnect();
@@ -34,16 +35,13 @@ Step(
     }
     async.forEachSeries(calendars.items, function (calendar, nextCalendar) {
       console.log('[%s] - calendar %s', calendar.id, calendar.summary);
-
       googleCalendarService.loadCalendarEvents(calendar.id, {showdeleted:true}, function (err, calendarEvents) {
         if (err) {
-          return exitError(null, err);
+          console.error('err :', err);
+          return nextCalendar();
         }
         if (calendarEvents.items) {
           async.forEachSeries(calendarEvents.items, function (calendarEvent, nextCalendarEvent) {
-            /*
-             console.log('calendarEvent :', calendarEvent);
-             */
             console.log('event %s : %s [%s - %s] @ %s',
               calendarEvent.id,
               calendarEvent.summary,

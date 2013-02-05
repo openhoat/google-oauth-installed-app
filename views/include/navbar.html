@@ -15,9 +15,9 @@
           <% if (session.user) { %>
             <li class="<%= currentUrl.indexOf('/calendars') === 0 ? 'active' : '' %>"><a href="/calendars">Calendars</a></li>
             <li class="<%= currentUrl.indexOf('/account') === 0 ? 'active' : '' %>"><a href="/account">Account</a></li>
-            <li class="<%= currentUrl.indexOf('/logout') === 0 ? 'active' : '' %>"><a href="/logout?next=<%= currentUrl %>">Logout</a></li>
+            <li class="<%= currentUrl.indexOf('/logout') === 0 ? 'active' : '' %>"><a href="/logout">Logout</a></li>
           <% } else { %>
-            <li class="<%= currentUrl.indexOf('/login') === 0 ? 'active' : '' %>"><a href="/login?next=<%= currentUrl %>">Login</a></li>
+            <li class="<%= currentUrl.indexOf('/login') === 0 ? 'active' : '' %>"><a href="/login">Login</a></li>
           <% } %>
         </ul>
       </div>

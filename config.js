@@ -6,9 +6,9 @@ var config = {
     { url:'/logout', middleware:'logout', method:'get' },
     { url:'/registration', middleware:'registration' },
     { url:'/approval', middleware:'approval' },
-    { url:'/account', middleware:'account' },
-    { url:'/calendars', middleware:'calendars' },
-    { url:'/events/:calendarId', middleware:'events' }
+    { url:'/account', middleware:'account', method:'get' },
+    { url:'/calendars', middleware:'calendars', method:'get' },
+    { url:'/events/:calendarId', middleware:'events', method:'get' }
   ]
 };
 
