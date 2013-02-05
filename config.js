@@ -1,5 +1,5 @@
 var config = {
-  port:3000,
+  port:3006,
   routes:[
     { url:'/', middleware:'home', method:'get' },
     { url:'/login', middleware:'login' },
