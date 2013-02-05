@@ -1,5 +1,6 @@
-var GoogleCalendarService = require('./lib/google-calendar-service')
+var async = require('async')
   , Step = require('step')
+  , GoogleCalendarService = require('./lib/google-calendar-service')
   , username = process.argv[2]
   , googleCalendarService = new GoogleCalendarService(username);
 
@@ -25,23 +26,38 @@ Step(
     googleCalendarService.loadCalendars(this);
   },
   function (err, calendars) {
-    calendars.items.forEach(function (calendar) {
-      googleCalendarService.loadCalendarEvents(calendar.id, function (err, calendarEvents) {
+    if (err) {
+      return exitError(null, err);
+    }
+    async.forEachSeries(calendars.items, function (calendar, nextCalendar) {
+      console.log('[%s] - calendar %s', calendar.id, calendar.summary);
+
+      googleCalendarService.loadCalendarEvents(calendar.id, {showdeleted:true}, function (err, calendarEvents) {
         if (err) {
           return exitError(null, err);
         }
-        calendarEvents.items.forEach(function (calendarEvent) {
-          console.log('[%s] - calendar %s : %s [%s - %s] @ %s',
-            calendar.id,
-            calendar.summary,
-            calendarEvent.summary,
-            calendarEvent.start,
-            calendarEvent.end,
-            calendarEvent.location
-          );
-        });
+        if (calendarEvents.items) {
+          async.forEachSeries(calendarEvents.items, function (calendarEvent, nextCalendarEvent) {
+            /*
+          console.log('calendarEvent :', calendarEvent);
+             */
+            console.log('event %s : %s [%s - %s] @ %s',
+              calendarEvent.id,
+              calendarEvent.summary,
+              calendarEvent.start ? calendarEvent.start.startTime : 'undefined',
+              calendarEvent.end ? calendarEvent.end.endTime : 'undefined',
+              calendarEvent.location
+            );
+            nextCalendarEvent();
+          }, function () {
+            nextCalendar();
+          });
+        } else {
+          nextCalendar();
+        }
       });
+    }, function () {
+      console.log('done');
     });
-    this();
   }
 );
