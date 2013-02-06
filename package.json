@@ -1,6 +1,6 @@
 {
   "name":"google-oauth-installed-app",
-  "version":"0.0.3",
+  "version":"0.0.4",
   "description":"Google oauth process for installed apps example",
   "homepage":"https://github.com/openhoat/google-oauth-installed-app",
   "main":"app.js",

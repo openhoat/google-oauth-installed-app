@@ -13,7 +13,7 @@ middleware = function (req, res, next) {
     function () {
       var that = this
         , accountToken = req.session.user.googleAccountToken;
-      googleCalendarService = new GoogleCalendarService(username, accountToken);
+      googleCalendarService = new GoogleCalendarService(accountToken);
       googleCalendarService.init(function (err) {
         if (accountToken === undefined) {
           req.session.user.googleAccountToken = googleCalendarService.getGoogleAccountToken();
