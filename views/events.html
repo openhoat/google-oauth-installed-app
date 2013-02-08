@@ -19,8 +19,8 @@
     <% events.forEach(function(event){ %>
     <tr>
       <td><%= event.summary %></td>
-      <td><%= event.start.dateTime %></td>
-      <td><%= event.end.dateTime %></td>
+      <td><% if (event.start) { %><%= event.start.dateTime %><% } %></td>
+      <td><% if (event.end) { %><%= event.end.dateTime %><% } %></td>
       <td><%= event.location %></td>
     </tr>
     <% }) %>

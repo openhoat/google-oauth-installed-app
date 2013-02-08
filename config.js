@@ -1,5 +1,9 @@
 var config = {
   port:3006,
+  db:{
+    host:'localhost',
+    dbName:'google-installed-app-accounts'
+  },
   routes:[
     { url:'/', middleware:'home', method:'get' },
     { url:'/login', middleware:'login' },
