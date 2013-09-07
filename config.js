@@ -1,5 +1,5 @@
 var config = {
-  port:3006,
+  port:3000,
   db:{
     host:'localhost',
     dbName:'google-installed-app-accounts'
